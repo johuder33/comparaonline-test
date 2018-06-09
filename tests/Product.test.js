@@ -4,13 +4,19 @@ const { expect } = chai;
 const Product = require('../classes/Product');
 
 describe('Suite Tests Product', () => {
-    let ProductInstance;
+    let ProductInstance, fullCoverageProduct;
+    
     const productName = 'Super Sale';
     const productSellIn = 5;
     const productPrice = 20;
 
+    const productFullCoverage = 'Full Coverage';
+    const productFullCoverageSellIn = 3;
+    const productFullCoveragePrice = 9;
+
     beforeEach(() => {
         ProductInstance = new Product(productName, productSellIn, productPrice);
+        fullCoverageProduct = new Product(productFullCoverage, productFullCoverageSellIn, productFullCoveragePrice);
     });
 
     it('should create a valid Product instance', () => {
@@ -111,5 +117,30 @@ describe('Suite Tests Product', () => {
     it('should set specific price for product', () => {
         ProductInstance._setPriceTo(3);
         expect(ProductInstance.price).to.equal(3);
+    });
+
+    it('should update only Full Coverage Product', () => {
+        const normalProduct = new Product('Low Coverage', 20, 11);
+        fullCoverageProduct.updatePrice();
+        normalProduct.updatePrice();
+        expect(fullCoverageProduct.price).to.equal(productFullCoveragePrice + 1);
+        expect(normalProduct.price).to.equal(11);
+    });
+
+    it('should update Full Coverage x2 when sell in days has been expired', () => {
+        // force expired days
+        fullCoverageProduct.sellIn = -1;
+        fullCoverageProduct.updatePrice();
+        expect(fullCoverageProduct.price).to.equal(productFullCoveragePrice + 2);
+    });
+
+    it('should update more than maximun price', () => {
+        // force price
+        fullCoverageProduct.price = 50;
+        fullCoverageProduct.updatePrice();
+        fullCoverageProduct.updatePrice();
+        fullCoverageProduct.updatePrice();
+        fullCoverageProduct.updatePrice();
+        expect(fullCoverageProduct.price).to.equal(50);
     });
 })
