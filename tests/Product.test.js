@@ -224,4 +224,30 @@ describe('Suite Tests Product', () => {
         ProductInstance.updatePrice();
         expect(ProductInstance.price).to.equal(productPrice - 4);
     });
+
+    it('should decrese sellIn days for each product except Mega Coverage product', () => {
+        ProductInstance.updateSellInDays();
+        fullCoverageProduct.updateSellInDays();
+        megaProduct.updateSellInDays();
+        specialProduct.updateSellInDays();
+        superProduct.updateSellInDays();
+        
+        expect(ProductInstance.sellIn).to.equal(productSellIn - 1);
+        expect(fullCoverageProduct.sellIn).to.equal(productFullCoverageSellIn - 1);
+        expect(megaProduct.sellIn).to.equal(productMegaSellIn);
+        expect(specialProduct.sellIn).to.equal(productSpecialSellIn - 1);
+        expect(superProduct.sellIn).to.equal(productSuperSellIn - 1);
+
+        ProductInstance.updateSellInDays();
+        fullCoverageProduct.updateSellInDays();
+        megaProduct.updateSellInDays();
+        specialProduct.updateSellInDays();
+        superProduct.updateSellInDays();
+        
+        expect(ProductInstance.sellIn).to.equal(productSellIn - 2);
+        expect(fullCoverageProduct.sellIn).to.equal(productFullCoverageSellIn - 2);
+        expect(megaProduct.sellIn).to.equal(productMegaSellIn);
+        expect(specialProduct.sellIn).to.equal(productSpecialSellIn - 2);
+        expect(superProduct.sellIn).to.equal(productSuperSellIn - 2);
+    });
 })
