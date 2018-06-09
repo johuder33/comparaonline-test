@@ -138,6 +138,28 @@ class Product {
 		this.updateFullCoveragePrice();
 		this.updateMegaCoveragePrice();
 		this.updateSpecialCoveragePrice();
+		this.updateSuperSalePrice();
+	}
+	
+	/**
+	 * will update price only for Super Sale products
+	 *
+	 * @memberof Product
+	 */
+	updateSuperSalePrice() {
+		if(this._hasPositivePrice() && this.isSuperSale()) {
+			this._decresePriceBy2();
+		}
+	}
+
+	/**
+	 * a simply helper that tell us that current product is Super Sale
+	 *
+	 * @returns {boolean} true / false
+	 * @memberof Product
+	 */
+	isSuperSale() {
+		return this._hasNameEqualTo('Super Sale');
 	}
 
 	/**
