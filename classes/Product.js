@@ -137,6 +137,44 @@ class Product {
 	updatePrice() {
 		this.updateFullCoveragePrice();
 		this.updateMegaCoveragePrice();
+		this.updateSpecialCoveragePrice();
+	}
+
+	/**
+	 * will update price only for Special Coverage products
+	 *
+	 * @memberof Product
+	 */
+	updateSpecialCoveragePrice() {
+		if (this.isSpecialFullCoverage()) {
+		if (this._hasExpiredDaysToSell() && this._hasPositivePrice()) {
+			this._setPriceTo(0);
+		}
+
+		if (!this._hasExpiredDaysToSell()) {
+			let nextPrice = 1;
+
+			if (this._sellInDayIsLessThan(11)) {
+				nextPrice = this._sellInDayIsLessThan(6) ? 3 : 2;
+			}
+
+			if (this._sellInDayIsLessThan(1)) {
+				return this._setPriceTo(0);
+			}
+
+			this.updatePriceIn(nextPrice);
+		}
+		}
+	}
+
+	/**
+	 * a simply helper that tell us that current product is Special Full Coverage
+	 *
+	 * @returns {boolean} true / false
+	 * @memberof Product
+	 */
+	isSpecialFullCoverage() {
+		return this._hasNameEqualTo('Special Full Coverage');
 	}
 
 	/**
