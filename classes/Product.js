@@ -136,6 +136,28 @@ class Product {
 	 */
 	updatePrice() {
 		this.updateFullCoveragePrice();
+		this.updateMegaCoveragePrice();
+	}
+
+	/**
+	 * will update price only for Mega Coverage products
+	 *
+	 * @memberof Product
+	 */
+	updateMegaCoveragePrice() {
+		if (this.isMegaCoverage() && this._hasPriceNotGreatherThan(this.getLimitPrice)) {
+			this.updatePriceIn(1);
+		}
+	}
+
+	/**
+	 * a simply helper that tell us that current product is Mega Coverage
+	 *
+	 * @returns {boolean} true / false
+	 * @memberof Product
+	 */
+	isMegaCoverage() {
+		return this._hasNameEqualTo('Mega Coverage');
 	}
 
 	/**
