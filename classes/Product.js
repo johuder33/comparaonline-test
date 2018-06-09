@@ -8,11 +8,126 @@
  * @argument {number} price product price
  */
 class Product {
-    constructor(name, sellIn, price) {
-      this.name = name;
-      this.sellIn = sellIn;
-      this.price = price;
-    }
+	constructor(name, sellIn, price) {
+		this.name = name;
+		this.sellIn = sellIn;
+		this.price = price;
+	}
+
+	/**
+	 * this will compare the current product name with given name
+	 * @param {string} name name for current product
+	 */
+	_hasNameEqualTo(name) {
+		return this.name === name;
+	}
+
+	/**
+	 * get if current product price is positive
+	 */
+	_hasPositivePrice() {
+		return this.price > 0;
+	}
+
+	/**
+	 * A simple getter for maximun price per product
+	 */
+	get getLimitPrice() {
+		return 50;
+	}
+
+	/**
+	 * this function will tell us if price reach to the limit
+	 * @param {number} amount the max number to be compared
+	 */
+	_hasPriceNotGreatherThan(amount) {
+		return this.price < amount;
+	}
+
+	/**
+	 * this function will tell us if the current sellIn is less thant given days
+	 * @param {number} days number of days to compared our sellIn
+	 */
+	_sellInDayIsLessThan(days) {
+		return this.sellIn < days;
+	}
+
+	/**
+	 *This function will tell us if the next price is greather that our limit 
+	* @see getLimitPrice
+	* @param {*} nextPrice
+	* @returns the normalize price of product
+	* @memberof Product
+	*/
+	_checkBoundariesPrices(nextPrice) {
+		let normalizePrice = nextPrice;
+		if ((this.price + normalizePrice) > this.getLimitPrice) {
+			normalizePrice = (this.price + normalizePrice) - this.getLimitPrice;
+			normalizePrice = nextPrice - normalizePrice;
+		}
+
+		return normalizePrice;
+	}
+
+	/**
+	 * Update the price with an specific operation
+	 * eg: if -1 is given, so will sustract against current price
+	 * eg: if 1 is given, so will add that number to the current price
+	 *
+	 * @param {*} amount next price for product
+	 * @memberof Product
+	 */
+	updatePriceIn(amount) {
+		const nextPrice = this._checkBoundariesPrices(amount);
+		this.price = this.price + (nextPrice);
+	}
+
+	/**
+	 * will decrese our price by x2 speed
+	 *
+	 * @returns
+	 * @memberof Product
+	 */
+	_decresePriceBy2() {
+		// only decrese our price in 2, when our price
+		// is actually greather than 1.
+		if (this.price > 1) {
+			this.updatePriceIn(-2);
+			return;
+		}
+
+		// decrese our price in just 1
+		this.updatePriceIn(-1);
+	}
+
+	/**
+	 * simply will decrese our sell in day
+	 *
+	 * @memberof Product
+	 */
+	_decreseSellDay() {
+		this.sellIn -= 1;
+	}
+
+	/**
+	 *will tell us that our sell days has been expired
+	*
+	* @returns
+	* @memberof Product
+	*/
+	_hasExpiredDaysToSell() {
+		return this.sellIn < 1;
+	}
+
+	/**
+	 * will set a specific / mandatory price for product
+	 *
+	 * @param {*} nextPrice the next price
+	 * @memberof Product
+	 */
+	_setPriceTo(price) {
+		this.price = price;
+	}
 }
 
 module.exports = Product;
