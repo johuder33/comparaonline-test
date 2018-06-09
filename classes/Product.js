@@ -128,6 +128,37 @@ class Product {
 	_setPriceTo(price) {
 		this.price = price;
 	}
+
+	/**
+	 * a centralize function that will emit the prices updates for products
+	 *
+	 * @memberof Product
+	 */
+	updatePrice() {
+		this.updateFullCoveragePrice();
+	}
+
+	/**
+	 * will update price only for Full Coverage products
+	 *
+	 * @memberof Product
+	 */
+	updateFullCoveragePrice() {
+		if(this.isFullCoverage() && this._hasPriceNotGreatherThan(this.getLimitPrice)) {
+			const nextPrice = this._hasExpiredDaysToSell() ? 2 : 1;
+			this.updatePriceIn(nextPrice);
+		}
+	}
+
+	/**
+	 * a simply helper that tell us that current product is full coverage
+	 *
+	 * @returns {boolean} true / false
+	 * @memberof Product
+	 */
+	isFullCoverage() {
+		return this._hasNameEqualTo('Full Coverage');
+	}
 }
 
 module.exports = Product;
