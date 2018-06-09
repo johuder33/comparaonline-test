@@ -4,7 +4,7 @@ const { expect } = chai;
 const Product = require('../classes/Product');
 
 describe('Suite Tests Product', () => {
-    let ProductInstance, fullCoverageProduct, megaProduct, specialProduct;
+    let ProductInstance, fullCoverageProduct, megaProduct, specialProduct, superProduct;
     
     const productName = 'Super Sale';
     const productSellIn = 5;
@@ -22,11 +22,16 @@ describe('Suite Tests Product', () => {
     const productSpecialSellIn = 15;
     const productSpecialPrice = 10;
 
+    const productSuperName = 'Super Sale';
+    const productSuperSellIn = 8;
+    const productSuperPrice = 9;
+
     beforeEach(() => {
         ProductInstance = new Product(productName, productSellIn, productPrice);
         fullCoverageProduct = new Product(productFullCoverage, productFullCoverageSellIn, productFullCoveragePrice);
         megaProduct = new Product(productMega, productMegaSellIn, productMegaPrice);
         specialProduct = new Product(productSpecial, productSpecialSellIn, productSpecialPrice);
+        superProduct = new Product(productSuperName, productSuperSellIn, productSuperPrice);
     });
 
     it('should create a valid Product instance', () => {
@@ -209,5 +214,30 @@ describe('Suite Tests Product', () => {
         specialProduct.sellIn = 0;
         specialProduct.updatePrice();
         expect(specialProduct.price).to.equal(0);
+    });
+
+    it('should update only Super Sale Product', () => {
+        const normalProduct = new Product('Low Coverage', 20, 11);
+        superProduct.updatePrice();
+        normalProduct.updatePrice();
+        expect(superProduct.price).to.equal(productSuperPrice - 2);
+        expect(normalProduct.price).to.equal(11);
+    });
+
+    it('should update x2 Super Sale Product', () => {
+        superProduct.updatePrice();
+        superProduct.updatePrice();
+        expect(superProduct.price).to.equal(productSuperPrice - 4);
+    });
+
+    it('should set price zero (0) when next price is less than 1', () => {
+        superProduct.updatePrice(); // 7
+        superProduct.updatePrice(); // 5
+        superProduct.updatePrice(); // 3
+        superProduct.updatePrice(); // 1
+        superProduct.updatePrice(); // 0
+        superProduct.updatePrice(); // 0
+        superProduct.updatePrice(); // 0
+        expect(superProduct.price).to.equal(0);
     });
 })
