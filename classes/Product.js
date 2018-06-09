@@ -142,6 +142,17 @@ class Product {
 		this.updateSuperSalePrice();
 	}
 
+	/**
+	 * a centralized function to update sell in days for products
+	 *
+	 * @memberof Product
+	 */
+	updateSellInDays() {
+		if (!this.isMegaCoverage()) {
+			this._decreseSellDay();
+		}
+	}
+
   	/**
 	 * will update price only for normal products
 	 *
