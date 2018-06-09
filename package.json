@@ -1,0 +1,30 @@
+{
+  "name": "compara-online-test",
+  "version": "1.0.0",
+  "description": "compara online software test",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --watch-extensions js tests/**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johuder33/comparaonline-test.git"
+  },
+  "keywords": [
+    "compara-online",
+    "nodejs",
+    "js",
+    "es6",
+    "poo"
+  ],
+  "author": "Juorder Gonzalez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johuder33/comparaonline-test/issues"
+  },
+  "homepage": "https://github.com/johuder33/comparaonline-test#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
+  }
+}
