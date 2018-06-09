@@ -135,10 +135,38 @@ class Product {
 	 * @memberof Product
 	 */
 	updatePrice() {
+		this.updateNormalProductsPrice();
 		this.updateFullCoveragePrice();
 		this.updateMegaCoveragePrice();
 		this.updateSpecialCoveragePrice();
 		this.updateSuperSalePrice();
+	}
+
+  	/**
+	 * will update price only for normal products
+	 *
+	 * @memberof Product
+	 */
+	updateNormalProductsPrice() {
+		if(this._hasPositivePrice() && this.isNormalProduct()) {
+			const nextPrice = this._hasExpiredDaysToSell() ? -2 : -1;
+			this.updatePriceIn(nextPrice);
+		}
+	}
+
+	/**
+	 * a simply helper that tell us that current product is just a normal product
+	 *
+	 * @returns {boolean} true / false
+	 * @memberof Product
+	 */
+	isNormalProduct() {
+		return [
+		this.isFullCoverage(),
+		this.isSpecialFullCoverage(),
+		this.isMegaCoverage(),
+		this.isSuperSale()
+		].every((isNormalProduct) => !isNormalProduct);
 	}
 	
 	/**
