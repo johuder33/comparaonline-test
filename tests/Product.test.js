@@ -4,7 +4,7 @@ const { expect } = chai;
 const Product = require('../classes/Product');
 
 describe('Suite Tests Product', () => {
-    let ProductInstance, fullCoverageProduct;
+    let ProductInstance, fullCoverageProduct, megaProduct;
     
     const productName = 'Super Sale';
     const productSellIn = 5;
@@ -14,9 +14,14 @@ describe('Suite Tests Product', () => {
     const productFullCoverageSellIn = 3;
     const productFullCoveragePrice = 9;
 
+    const productMega = 'Mega Coverage';
+    const productMegaSellIn = 3;
+    const productMegaPrice = 9;
+
     beforeEach(() => {
         ProductInstance = new Product(productName, productSellIn, productPrice);
         fullCoverageProduct = new Product(productFullCoverage, productFullCoverageSellIn, productFullCoveragePrice);
+        megaProduct = new Product(productMega, productMegaSellIn, productMegaPrice);
     });
 
     it('should create a valid Product instance', () => {
@@ -134,7 +139,7 @@ describe('Suite Tests Product', () => {
         expect(fullCoverageProduct.price).to.equal(productFullCoveragePrice + 2);
     });
 
-    it('should update more than maximun price', () => {
+    it('should not update full coverage more than maximun price', () => {
         // force price
         fullCoverageProduct.price = 50;
         fullCoverageProduct.updatePrice();
@@ -142,5 +147,33 @@ describe('Suite Tests Product', () => {
         fullCoverageProduct.updatePrice();
         fullCoverageProduct.updatePrice();
         expect(fullCoverageProduct.price).to.equal(50);
+    });
+
+    it('should update only MegaCoverage product', () => {
+        const normalProduct = new Product('Low Coverage', 20, 11);
+        megaProduct.updatePrice();
+        normalProduct.updatePrice();
+        expect(megaProduct.price).to.equal(productMegaPrice + 1);
+        expect(normalProduct.price).to.equal(11);
+    });
+
+    it('should not update mega coverage more than maximun price', () => {
+        // force mega price 
+        megaProduct.price = 49;
+        megaProduct.updatePrice();
+        megaProduct.updatePrice();
+        megaProduct.updatePrice();
+        expect(megaProduct.price).to.equal(50);
+    });
+
+    it('should not update mega price if greather than maximun price', () => {
+        // force mega price 
+        megaProduct.price = 51;
+        megaProduct.updatePrice();
+        megaProduct.updatePrice();
+        megaProduct.updatePrice();
+        megaProduct.updatePrice();
+        megaProduct.updatePrice();
+        expect(megaProduct.price).to.equal(51);
     });
 })
