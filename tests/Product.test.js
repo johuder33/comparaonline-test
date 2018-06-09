@@ -4,7 +4,7 @@ const { expect } = chai;
 const Product = require('../classes/Product');
 
 describe('Suite Tests Product', () => {
-    let ProductInstance, fullCoverageProduct, megaProduct;
+    let ProductInstance, fullCoverageProduct, megaProduct, specialProduct;
     
     const productName = 'Super Sale';
     const productSellIn = 5;
@@ -18,10 +18,15 @@ describe('Suite Tests Product', () => {
     const productMegaSellIn = 3;
     const productMegaPrice = 9;
 
+    const productSpecial = 'Special Full Coverage';
+    const productSpecialSellIn = 15;
+    const productSpecialPrice = 10;
+
     beforeEach(() => {
         ProductInstance = new Product(productName, productSellIn, productPrice);
         fullCoverageProduct = new Product(productFullCoverage, productFullCoverageSellIn, productFullCoveragePrice);
         megaProduct = new Product(productMega, productMegaSellIn, productMegaPrice);
+        specialProduct = new Product(productSpecial, productSpecialSellIn, productSpecialPrice);
     });
 
     it('should create a valid Product instance', () => {
@@ -175,5 +180,34 @@ describe('Suite Tests Product', () => {
         megaProduct.updatePrice();
         megaProduct.updatePrice();
         expect(megaProduct.price).to.equal(51);
+    });
+
+    it('should update only Special Full Coverage Product', () => {
+        const normalProduct = new Product('Low Coverage', 20, 11);
+        specialProduct.updatePrice();
+        normalProduct.updatePrice();
+        expect(specialProduct.price).to.equal(productSpecialPrice + 1);
+        expect(normalProduct.price).to.equal(11);
+    });
+
+    it('should update Special Full Coverage Product for x2 is sellIn days is less than 11 days', () => {
+        // force sellIn days 
+        specialProduct.sellIn = 10;
+        specialProduct.updatePrice();
+        expect(specialProduct.price).to.equal(productSpecialPrice + 2);
+    });
+
+    it('should update Special Full Coverage Product for x3 is sellIn days is less than 6 days', () => {
+        // force sellIn days 
+        specialProduct.sellIn = 5;
+        specialProduct.updatePrice();
+        expect(specialProduct.price).to.equal(productSpecialPrice + 3);
+    });
+
+    it('should update to zero (0) price when Special Full Coverage Product sellIn days is 0', () => {
+        // force sellIn days 
+        specialProduct.sellIn = 0;
+        specialProduct.updatePrice();
+        expect(specialProduct.price).to.equal(0);
     });
 })
