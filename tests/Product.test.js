@@ -6,7 +6,7 @@ const Product = require('../classes/Product');
 describe('Suite Tests Product', () => {
     let ProductInstance, fullCoverageProduct, megaProduct, specialProduct, superProduct;
     
-    const productName = 'Super Sale';
+    const productName = 'Lower Coverage';
     const productSellIn = 5;
     const productPrice = 20;
 
@@ -134,14 +134,6 @@ describe('Suite Tests Product', () => {
         expect(ProductInstance.price).to.equal(3);
     });
 
-    it('should update only Full Coverage Product', () => {
-        const normalProduct = new Product('Low Coverage', 20, 11);
-        fullCoverageProduct.updatePrice();
-        normalProduct.updatePrice();
-        expect(fullCoverageProduct.price).to.equal(productFullCoveragePrice + 1);
-        expect(normalProduct.price).to.equal(11);
-    });
-
     it('should update Full Coverage x2 when sell in days has been expired', () => {
         // force expired days
         fullCoverageProduct.sellIn = -1;
@@ -157,14 +149,6 @@ describe('Suite Tests Product', () => {
         fullCoverageProduct.updatePrice();
         fullCoverageProduct.updatePrice();
         expect(fullCoverageProduct.price).to.equal(50);
-    });
-
-    it('should update only MegaCoverage product', () => {
-        const normalProduct = new Product('Low Coverage', 20, 11);
-        megaProduct.updatePrice();
-        normalProduct.updatePrice();
-        expect(megaProduct.price).to.equal(productMegaPrice + 1);
-        expect(normalProduct.price).to.equal(11);
     });
 
     it('should not update mega coverage more than maximun price', () => {
@@ -185,14 +169,6 @@ describe('Suite Tests Product', () => {
         megaProduct.updatePrice();
         megaProduct.updatePrice();
         expect(megaProduct.price).to.equal(51);
-    });
-
-    it('should update only Special Full Coverage Product', () => {
-        const normalProduct = new Product('Low Coverage', 20, 11);
-        specialProduct.updatePrice();
-        normalProduct.updatePrice();
-        expect(specialProduct.price).to.equal(productSpecialPrice + 1);
-        expect(normalProduct.price).to.equal(11);
     });
 
     it('should update Special Full Coverage Product for x2 is sellIn days is less than 11 days', () => {
@@ -216,14 +192,6 @@ describe('Suite Tests Product', () => {
         expect(specialProduct.price).to.equal(0);
     });
 
-    it('should update only Super Sale Product', () => {
-        const normalProduct = new Product('Low Coverage', 20, 11);
-        superProduct.updatePrice();
-        normalProduct.updatePrice();
-        expect(superProduct.price).to.equal(productSuperPrice - 2);
-        expect(normalProduct.price).to.equal(11);
-    });
-
     it('should update x2 Super Sale Product', () => {
         superProduct.updatePrice();
         superProduct.updatePrice();
@@ -239,5 +207,21 @@ describe('Suite Tests Product', () => {
         superProduct.updatePrice(); // 0
         superProduct.updatePrice(); // 0
         expect(superProduct.price).to.equal(0);
+    });
+
+    it('should update price for normal products', () => {
+        ProductInstance.updatePrice();
+        expect(ProductInstance.price).to.equal(productPrice - 1);
+        ProductInstance.updatePrice();
+        expect(ProductInstance.price).to.equal(productPrice - 2);
+    });
+
+    it('should update price x2 when sellIn days has beed expired', () => {
+        // force sellIn expired
+        ProductInstance.sellIn = 0;
+        ProductInstance.updatePrice();
+        expect(ProductInstance.price).to.equal(productPrice - 2);
+        ProductInstance.updatePrice();
+        expect(ProductInstance.price).to.equal(productPrice - 4);
     });
 })
